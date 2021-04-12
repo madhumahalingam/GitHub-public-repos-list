@@ -82,6 +82,10 @@ public class DetailFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 FragmentManager fragmentManager = getFragmentManager();
+                //clear all stacks
+                fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+                //add home fragment
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 HomeFragment homeFragment = new HomeFragment();
                 fragmentTransaction.replace(R.id.content_frame, homeFragment);

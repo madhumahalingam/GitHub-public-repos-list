@@ -138,6 +138,7 @@ public class HomeFragment extends Fragment implements ViewResponseInterface, Sho
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         DetailFragment detailFragment = new DetailFragment();
         fragmentTransaction.replace(R.id.content_frame, detailFragment,"detailpage");
+        fragmentTransaction.addToBackStack(detailFragment.getClass().getName());
         fragmentTransaction.commit();
     }
 }

@@ -3,13 +3,16 @@ package com.example.githubrepos.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.githubrepos.R;
 import com.example.githubrepos.adapter.ResponseAdapter;
+import com.example.githubrepos.fragment.DetailFragment;
 import com.example.githubrepos.fragment.HomeFragment;
 import com.example.githubrepos.fragment.NotificationFragment;
 import com.example.githubrepos.fragment.SettingsFragment;
@@ -47,28 +50,34 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     public void displaySelectedScreen(int id) {
         Fragment fragment = null;
-        String tag = "";
+        String backstackname = "", tag= "";
         if (id == R.id.home) {
-            Fragment fragment1 = getSupportFragmentManager().findFragmentByTag("detailpage");
-            if (getSupportFragmentManager().getBackStackEntryCount() > 1) {
-                getSupportFragmentManager().popBackStack();
+            fragment = new HomeFragment();
+            tag = "home";
+            FragmentManager manager = getSupportFragmentManager();
+
+            for(int entry = 0; entry<manager.getBackStackEntryCount(); entry++){
+                String name = manager.getBackStackEntryAt(entry).getName();
+                if(name.equals("com.example.githubrepos.fragment.DetailFragment")){
+                    fragment = new DetailFragment();
+                    tag = "detailpage";
+                    break;
+                }
             }
-            else {
-                fragment = new HomeFragment();
-                tag = "home";
-            }
+
         } else if (id == R.id.notification) {
             fragment = new NotificationFragment();
-            tag = "notification";
+            tag = " notification";
 
         } else if (id == R.id.settings) {
             fragment = new SettingsFragment();
             tag = "settings";
         }
         if (fragment != null) {
+            backstackname = fragment.getClass().getName();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.content_frame, fragment,tag);
-            ft.addToBackStack(null);
+            ft.replace(R.id.content_frame, fragment, tag);
+            ft.addToBackStack(backstackname);
             ft.commit();
         }
     }
